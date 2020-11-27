@@ -8,10 +8,10 @@ postgres_logs:
 	docker logs simple_postgres -f --tail=30
 
 postgres_up:
-	migrate -path /home/yerassyl/go/src/simple/database/postgres -database postgres://simple:simple@localhost:8001/simple?sslmode=disable -verbose up
+	migrate -path ./database/postgres -database postgres://simple:simple@localhost:8001/simple?sslmode=disable -verbose up
 
 postgres_down:
-	migrate -path /home/yerassyl/go/src/simple/database/postgres -database postgres://simple:simple@localhost:8001/simple?sslmode=disable -verbose down
+	migrate -path ./database/postgres -database postgres://simple:simple@localhost:8001/simple?sslmode=disable -verbose down
 
 generate:
 	sqlc generate
