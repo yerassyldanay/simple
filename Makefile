@@ -16,5 +16,8 @@ postgres_down:
 generate:
 	sqlc generate
 
-.PHONY: postgres postgres_delete postgres_logs postgres_up postgres_down generate
+test:
+	go test -v ./model/sqlc/
+
+.PHONY: postgres postgres_delete postgres_logs postgres_up postgres_down generate test
 

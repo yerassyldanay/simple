@@ -7,6 +7,7 @@ import (
 	"database/sql"
 )
 
+// func (db *DB) ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
 type DBTX interface {
 	ExecContext(context.Context, string, ...interface{}) (sql.Result, error)
 	PrepareContext(context.Context, string) (*sql.Stmt, error)

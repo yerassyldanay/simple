@@ -1,0 +1,54 @@
+//// -- LEVEL 1
+//// -- Tables and References
+
+Table boards {
+  id bigint [pk, increment]
+  name  varchar [not null, unique]
+  created_at timestamptz [default: 'now()']
+}
+
+Table groups {
+  id bigint [pk, increment]
+  board_id bigint [not null]
+  name varchar [not null]
+  order int [not null, default: 0, note: 'this is how items will be arranged']
+  archived timestamptz [default: null]
+
+  indexes {
+    board_id
+  }
+}
+
+Table tasks {
+  id bigint [pk, increment]
+  group_id bigint [not null]
+  name varchar [not null]
+  done  timestamptz [default: null]
+  indexes {
+    group_id
+  }
+}
+
+Table users {
+  id bigint [pk, increment]
+  fio varchar [not null]
+  created timestamptz [default: 'now()']
+}
+
+Table board_responsible_users {
+  board_id bigint [not null]
+  user_id bigint [not null]
+}
+
+Table user_infos {
+  user_id bigint
+  email varchar [default: '']
+  phone varchar [default: '']
+  code varchar [default: '']
+}
+
+Ref: boards.id < groups.board_id
+Ref: groups.id < tasks.group_id
+Ref: board_responsible_users.user_id - users.id
+Ref: board_responsible_users.board_id - boards.id
+Ref: user_infos.user_id - users.id

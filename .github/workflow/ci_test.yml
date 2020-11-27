@@ -1,0 +1,51 @@
+name: ci-test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+    name: Go-Test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:11-alpine
+        env:
+          POSTGRES_USER: simple
+          POSTGRES_PASSWORD: simple
+          POSTGRES_DB: simple
+        ports:
+          - 8001:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+
+      - name: Set up Go 1.13
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.13
+        id: go-test-set-up
+
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+
+      - name: Install migrate (tool)
+        run: |
+          curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+          sudo mv migrate.linux-amd64 /usr/bin/migrate
+          which migrate
+
+      - name: Run migration
+        run: make postgres_up
+
+      - name: Test
+        run: make test
