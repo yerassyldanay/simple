@@ -12,7 +12,14 @@ type Board struct {
 	CreatedAt sql.NullTime `json:"created_at"`
 }
 
-type Column struct {
+type BoardResponsibleUser struct {
+	BoardID sql.NullInt64 `json:"board_id"`
+	UserID  sql.NullInt64 `json:"user_id"`
+	// 1: responsible, 2: can assign user
+	AuthorityLevel sql.NullInt32 `json:"authority_level"`
+}
+
+type Group struct {
 	ID      int64  `json:"id"`
 	BoardID int64  `json:"board_id"`
 	Name    string `json:"name"`
@@ -21,16 +28,47 @@ type Column struct {
 	Archived sql.NullTime `json:"archived"`
 }
 
-type Item struct {
-	ID       int64        `json:"id"`
-	ColumnID int64        `json:"column_id"`
-	Name     string       `json:"name"`
-	Done     sql.NullTime `json:"done"`
+type Permission struct {
+	ID          int64  `json:"id"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+}
+
+type PhoneCode struct {
+	Code      string         `json:"code"`
+	Country   string         `json:"country"`
+	Continent sql.NullString `json:"continent"`
+}
+
+type Role struct {
+	ID   int64  `json:"id"`
+	Name string `json:"name"`
+}
+
+type RolesAndPermission struct {
+	RoleID       int64 `json:"role_id"`
+	PermissionID int64 `json:"permission_id"`
 }
 
 type Task struct {
-	ID     int64        `json:"id"`
-	ItemID int64        `json:"item_id"`
-	Name   string       `json:"name"`
-	Done   sql.NullTime `json:"done"`
+	ID      int64        `json:"id"`
+	GroupID int64        `json:"group_id"`
+	Name    string       `json:"name"`
+	Done    sql.NullTime `json:"done"`
+}
+
+type User struct {
+	ID       int64          `json:"id"`
+	Fio      string         `json:"fio"`
+	Username string         `json:"username"`
+	Password string         `json:"password"`
+	Email    sql.NullString `json:"email"`
+	Phone    sql.NullString `json:"phone"`
+	Code     sql.NullString `json:"code"`
+	Created  sql.NullTime   `json:"created"`
+}
+
+type UsersAndRole struct {
+	UserID int64 `json:"user_id"`
+	RoleID int64 `json:"role_id"`
 }
